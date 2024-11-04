@@ -3,48 +3,48 @@
         "objectId": 10001,
         "objectName": "server",
         "objectParent": null,
-        "objectIcon": "server"
+        "objectIcon": "server icon"
     },
     {
         "objectId": 10002,
         "objectName": "Database",
         "objectParent": 10001,
-        "objectIcon": "database"
+        "objectIcon": "database icon"
     },
     {
         "objectId": 10003,
         "objectName": "Schema",
         "objectParent": 10002,
-        "objectIcon": "sitemap"
+        "objectIcon": "sitemap icon"
     },
     {
         "objectId": 10004,
         "objectName": "Table",
         "objectParent": 10002,
-        "objectIcon": "table"
+        "objectIcon": "table icon"
     },
     {
         "objectId": 10005,
         "objectName": "Store Procedure",
         "objectParent": 10002,
-        "objectIcon": "unsplash"
+        "objectIcon": "unsplash icon"
     },
     {
         "objectId": 10006,
         "objectName": "Function",
         "objectParent": 10002,
-        "objectIcon": "unsplash"
+        "objectIcon": "fa-solid fa-code-branch"
     },
     {
         "objectId": 10007,
         "objectName": "View",
         "objectParent": 10002,
-        "objectIcon": "eye"
+        "objectIcon": "fa-regular fa-window-restore"
     },
     {
         "objectId": 10008,
         "objectName": "Query",
         "objectParent": 10002,
-        "objectIcon": "pen"
+        "objectIcon": "fa-solid fa-file-code"
     }
 ]

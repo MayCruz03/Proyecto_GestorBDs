@@ -1,0 +1,143 @@
+const module = {
+    clases: {
+        menuItem: "server-obj",
+        menuItemList: "obj-list-items",
+        toggleContentButton: "btn-toggle-content",
+    },
+    objectsKeys: {
+        database: 10002,
+        schema: 10003
+    },
+    serverObjectsTypes: [],
+    serverObjectsList: [],
+    serverObjectsMenuContainer: "#frm-server-objects-menu",
+    createMenuItem(objTypeId, objId, objName, objIcon, listItems = []) {
+        const _this = this;
+        const template =
+            `<div class="item ${this.clases.menuItem}" data-objTypeId="${objTypeId}" data-objId="${objId}" data-toggleContent="1">
+                <i class="minus  teal icon ${this.clases.toggleContentButton}"></i>
+                <i class="${objIcon} icon"></i>
+                <div class="content">
+                    <div class="header">${objName}</div>
+                    <div class="list ${this.clases.menuItemList}"></div>
+                </div>
+            </div>`
+
+        const item = $(template);
+        listItems.forEach(listItem => { item.find(`.${this.clases.menuItemList}`).append(listItem) });
+
+        item.find(`.${this.clases.toggleContentButton}`).on("click", function (e) {
+            e.stopPropagation();
+            console.log($(this), "click");
+            const parent = $(this).parents(`.${_this.clases.menuItem}`).eq(0);
+            const toggleStatus = parent.attr("data-toggleContent");
+
+            $(this).removeClass(["minus", "plus"]);
+            if (toggleStatus == 0) {
+                $(parent).find(`.${_this.clases.menuItemList}`).eq(0).show();
+                parent.attr("data-toggleContent", 1);
+                $(this).addClass("minus");
+            } else {
+                $(parent).find(`.${_this.clases.menuItemList}`).eq(0).hide();
+                parent.attr("data-toggleContent", 0);
+                $(this).addClass("plus");
+            }
+
+        });
+
+        return item;
+
+    },
+    async fillServerObjectsTypes() {
+        const _this = this;
+        await $.ajax({
+            url: "data/server-objects.json",
+            method: "GET",
+            dataType: "JSON",
+            success(_response) {
+                _this.serverObjectsTypes = _response;
+            },
+            error(_response) {
+                _this.serverObjectsTypes = [];
+            },
+        });
+    },
+    async fillServerObjectsList() {
+        const _this = this;
+        await $.ajax({
+            url: "data/server-list-objects.json",
+            method: "GET",
+            dataType: "JSON",
+            success(_response) {
+                _this.serverObjectsList = _response;
+            },
+            error(_response) {
+                _this.serverObjectsList = [];
+            },
+        });
+    },
+    async main() {
+        await this.fillServerObjectsTypes();
+        await this.fillServerObjectsList();
+
+        $(this.serverObjectsMenuContainer).empty();
+
+        let databaseObjectsTypes = this.serverObjectsTypes.filter(
+            x => x.objectParent == this.objectsKeys.database && ![this.objectsKeys.schema].includes(x.objectId)
+        );
+        let databases = this.serverObjectsList.filter(x => x.objectTypeId == this.objectsKeys.database);
+        databases.forEach(db => {
+            const menuItem = this.createMenuItem(db.objectTypeId, db.objectId, db.objectName, "database");
+            $(this.serverObjectsMenuContainer).append(menuItem);
+
+            const databaseRoot = `.${this.clases.menuItem}[data-objTypeId="${db.objectTypeId}"][data-objId="${db.objectId}"] .${this.clases.menuItemList}`;
+            console.log(databaseRoot);
+            databaseObjectsTypes.forEach(obj => {
+
+                let listItems = this.serverObjectsList.filter(x => x.objectTypeId == obj.objectId && x.parentOf == db.objectId);
+                listItems = listItems.map(item => {
+                    return `<div class="item">
+                                <i class="${obj.objectIcon} icon"></i>
+                                <div class="content">
+                                    <div class="description">${item.schema}.${item.objectName}</div>
+                                </div>
+                            </div>`
+                });
+                if (listItems.length == 0) {
+                    listItems.push(
+                        `<div class="item">
+                            <div class="content">
+                                <div class="description"><i>Carpeta Vacia</i></div>
+                            </div>
+                        </div>`
+                    )
+                }
+                const menuFolderItem = this.createMenuItem(obj.objectId, obj.objectId, obj.objectName, "yellow folder", listItems);
+                $(databaseRoot).eq(0).append(menuFolderItem);
+            });
+
+            $(databaseRoot).find(`.${this.clases.toggleContentButton}`).trigger("click");
+        });
+        // console.log(this);
+    }
+}
+
+
+module.main();
+
+
+// async function fillServerObjects() {
+
+//     let serverObjects = [];
+//     await $.ajax({
+//         url: "data/server-objects.json",
+//         method: "GET",
+//         dataType: "JSON",
+//         success(_response) {
+//             serverObjects =
+//         },
+//         success(_response) {
+
+//         },
+//     })
+// }

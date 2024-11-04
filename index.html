@@ -8,19 +8,31 @@
 
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="utilities.css">
     <link rel="stylesheet" href="estilos.css">
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/menuBar.js"></script>
 </head>
 
 <body>
-    <div class="ui menu">
+    <div class="ui teal inverted menu">
         <div class="header item">Proyecto Gestor BD's</div>
-        <a class="item" data-content="Crear ventana de Consulta">SQL</a>
+        <div class="ui dropdown item">
+            <i class="plus icon"></i> Nuevo
+            <div class="menu">
+                <a class="icon item" href="#"><i class="table icon"></i> Tabla</a>
+                <a class="icon item" href="#"><i class="unsplash icon"></i> Procedimiento Almacenado</a>
+                <a class="icon item" href="#"><i class="fa-solid fa-code-branch icon"></i> Funcion</a>
+                <a class="icon item" href="#"><i class="fa-regular fa-window-restore icon"></i> Vista</a>
+                <a class="icon item" href="#"><i class="fa-solid fa-file-code icon"></i> Hoja de Consulta</a>
+            </div>
+        </div>
     </div>
 
     <div class="ui fluid container px-4">
@@ -30,98 +42,10 @@
                     <i class="server icon"></i>
                     <div class="content">Servidor: Microsoft SQL Server</div>
                 </div>
-                <div class="ui list" id="frm-server-objects-menu">
-                    <div class="item">
-                        <i class="teal minus icon"></i>
-                        <i class="database icon"></i>
-                        <div class="content">
-                            <div class="description">DB MSSQL #1</div>
-                            <div class="list">
-                                <div class="item">
-                                    <i class="teal minus icon"></i>
-                                    <i class="yellow folder icon"></i>
-                                    <div class="content">
-                                        <div class="header">Tablas</div>
-                                        <div class="list">
-                                            <div class="item">
-                                                <i class="table icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.TBL_USUARIOS</div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <i class="table icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.TBL_ROLES</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <i class="teal minus icon"></i>
-                                    <i class="yellow folder icon"></i>
-                                    <div class="content">
-                                        <div class="header">Procedimientos Almacenados</div>
-                                        <div class="list">
-                                            <div class="item">
-                                                <i class="unsplash icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.sp_ActualizarRegistro</div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <i class="unsplash icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.sp_EliminarRegistro</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <i class="teal plus icon"></i>
-                                    <i class="yellow folder icon"></i>
-                                    <div class="content">
-                                        <div class="header">Funciones</div>
-                                        <div class="list" hidden>
-                                            <div class="item">
-                                                <i class="unsplash icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.fn_buscarRegistro</div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <i class="unsplash icon"></i>
-                                                <div class="content">
-                                                    <div class="description">dbo.fn_guardarRegistro</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <i class="teal plus icon"></i>
-                                    <i class="yellow folder icon"></i>
-                                    <div class="content">
-                                        <div class="header">Vistas</div>
-                                        <div class="list" hidden></div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <i class="teal plus icon"></i>
-                                    <i class="yellow folder icon"></i>
-                                    <div class="content">
-                                        <div class="header">Consultas Guardadas</div>
-                                        <div class="list" hidden></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="ui list" id="frm-server-objects-menu"></div>
                 <div class="ui divider"></div>
             </div>
+
             <div class="column eleven wide">
 
                 <div class="ui dividing header">Datos de Tabla</div>
@@ -295,6 +219,7 @@
         $("[data-content]").popup();
         $(".ui.checkbox").checkbox();
         $('.ui.accordion').accordion();
+        $('.ui.dropdown').dropdown();
     </script>
 </body>
 
