@@ -1,0 +1,42 @@
+[
+    {
+        "objectTypeId": 10002,
+        "objectTypeName": "Database",
+        "objectId": 20001,
+        "objectName": "DB MSSQL #1",
+        "schema": null,
+        "parentOf": null
+    },
+    {
+        "objectTypeId": 10004,
+        "objectTypeName": "Table",
+        "objectId": 20002,
+        "objectName": "TBL_USUARIOS",
+        "schema": "dbo",
+        "parentOf": 20001
+    },
+    {
+        "objectTypeId": 10004,
+        "objectTypeName": "Table",
+        "objectId": 20003,
+        "objectName": "TBL_ROLES",
+        "schema": "dbo",
+        "parentOf": 20001
+    },
+    {
+        "objectTypeId": 10005,
+        "objectTypeName": "Store Procedure",
+        "objectId": 20004,
+        "objectName": "sp_ActualizarRegistro",
+        "schema": "dbo",
+        "parentOf": 20001
+    },
+    {
+        "objectTypeId": 10005,
+        "objectTypeName": "Store Procedure",
+        "objectId": 20005,
+        "objectName": "sp_EliminarRegistro",
+        "schema": "dbo",
+        "parentOf": 20001
+    }
+]

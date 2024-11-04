@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.css">
+    <link rel="stylesheet" href="utilities.css">
+    <link rel="stylesheet" href="estilos.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+    <div class="ui menu">
+        <div class="header item">Chepa's Proyect</div>
+        <a class="item" data-content="Crear ventana de Consulta">SQL</a>
+    </div>
+
+    <div class="ui fluid container px-4">
+        <div class="ui grid two column celled">
+            <div class="column five wide">
+                <div class="ui header dividing">
+                    <i class="server icon"></i>
+                    <div class="content">Servidor: Microsoft SQL Server</div>
+                </div>
+                <div class="ui list" id="frm-server-objects-menu">
+                    <div class="item">
+                        <i class="teal minus icon"></i>
+                        <i class="database icon"></i>
+                        <div class="content">
+                            <div class="description">DB MSSQL #1</div>
+                            <div class="list">
+                                <div class="item">
+                                    <i class="teal minus icon"></i>
+                                    <i class="yellow folder icon"></i>
+                                    <div class="content">
+                                        <div class="header">Tablas</div>
+                                        <div class="list">
+                                            <div class="item">
+                                                <i class="table icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.TBL_USUARIOS</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="table icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.TBL_ROLES</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="teal minus icon"></i>
+                                    <i class="yellow folder icon"></i>
+                                    <div class="content">
+                                        <div class="header">Procedimientos Almacenados</div>
+                                        <div class="list">
+                                            <div class="item">
+                                                <i class="unsplash icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.sp_ActualizarRegistro</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="unsplash icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.sp_EliminarRegistro</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="teal plus icon"></i>
+                                    <i class="yellow folder icon"></i>
+                                    <div class="content">
+                                        <div class="header">Funciones</div>
+                                        <div class="list" hidden>
+                                            <div class="item">
+                                                <i class="unsplash icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.fn_buscarRegistro</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="unsplash icon"></i>
+                                                <div class="content">
+                                                    <div class="description">dbo.fn_guardarRegistro</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="teal plus icon"></i>
+                                    <i class="yellow folder icon"></i>
+                                    <div class="content">
+                                        <div class="header">Vistas</div>
+                                        <div class="list" hidden></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="teal plus icon"></i>
+                                    <i class="yellow folder icon"></i>
+                                    <div class="content">
+                                        <div class="header">Consultas Guardadas</div>
+                                        <div class="list" hidden></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+            </div>
+            <div class="column eleven wide">
+
+                <div class="ui dividing header">Datos de Tabla</div>
+
+                <table class="ui tiny table">
+                    <thead>
+                        <tr>
+                            <th class="two wide text-center">Tabla</th>
+                            <th class="three wide">
+                                <div class="ui input fluid"><input type="text" placeholder="Esquema..."></div>
+                            </th>
+                            <th>
+                                <div class="ui input fluid"><input type="text" placeholder="Nombre de Tabla..."></div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="ui dividing header">Estructura de Tabla</div>
+
+                <table class="ui tiny table fluid celled">
+                    <thead>
+                        <tr class="text-center">
+                            <th colspan="4">Estructura</th>
+                            <th colspan="5">Relacion</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th>Indice</th>
+                            <th>Nombre Campo</th>
+                            <th>Tipo Dato</th>
+                            <th>Valor Defecto</th>
+                            <th>Tabla</th>
+                            <th>Campo</th>
+                            <!-- <th>En Act. <i class="blue circle icon question"
+                                    data-content="Accion al actualizar un registro"></i></th>
+                            <th>En Elim. <i class="blue circle icon question"
+                                    data-content="Accion al eliminar un registro"></i>
+                            </th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">PRIMARY</option>
+                                    <option value="2">UNIQUE</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Varchar</option>
+                                    <option value="2">Int</option>
+                                    <option value="3">Numeric</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Tabla #1</option>
+                                    <option value="1">Tabla #2</option>
+                                    <option value="1">Tabla #3</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Campo #1</option>
+                                    <option value="1">Campo #2</option>
+                                    <option value="1">Campo #3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Primaria</option>
+                                    <option value="2">Indice</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Varchar</option>
+                                    <option value="2">Int</option>
+                                    <option value="3">Numeric</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Tabla #1</option>
+                                    <option value="1">Tabla #2</option>
+                                    <option value="1">Tabla #3</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Campo #1</option>
+                                    <option value="1">Campo #2</option>
+                                    <option value="1">Campo #3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Primaria</option>
+                                    <option value="2">Indice</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Varchar</option>
+                                    <option value="2">Int</option>
+                                    <option value="3">Numeric</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="ui input fluid"><input type="text" placeholder="Escribe algo..."></div>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Tabla #1</option>
+                                    <option value="1">Tabla #2</option>
+                                    <option value="1">Tabla #3</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="ui dropdown fluid">
+                                    <option value="" selected>Selecciona</option>
+                                    <option value="1">Campo #1</option>
+                                    <option value="1">Campo #2</option>
+                                    <option value="1">Campo #3</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="ui buttons">
+                    <button class="ui green button">Guardar</button>
+                    <button class="ui button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("[data-content]").popup();
+        $(".ui.checkbox").checkbox();
+        $('.ui.accordion').accordion();
+    </script>
+</body>
+
+</html>
