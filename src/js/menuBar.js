@@ -76,6 +76,9 @@ const menuBarComponent = {
         });
     },
     initEvents() {
+        $("#top-tool-bar, #frm-server-objects-menu").find(".ui.dropdown").dropdown();
+        $("[data-content]").popup();
+
         $(".btn-toggle-menu[data-toggle]").on("click", function () {
             const status = parseInt($(this).attr("data-toggle"));
             $(`#frm-server-objects-menu [data-objtypeid="10002"] .obj-list-items .server-obj`).attr("data-togglecontent", status);

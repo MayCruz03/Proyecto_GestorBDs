@@ -1,43 +1,104 @@
 <?php
 
-class controller
+class moduleData
 {
-    private $conn;
-    private $RoutersDir;
 
-    function __construct($conection)
+    public $html;
+    public $js;
+    public $css;
+    public $methodsAlowed;
+
+    function __construct($html = "", $js = [], $css = [], $methodsAlowed = ["GET"])
     {
-        $this->conn = $conection;
-        $this->RoutersDir = "routers";
+        $this->html = $html;
+        $this->js = $js;
+        $this->css = $css;
+        $this->methodsAlowed = $methodsAlowed;
     }
 
-    public function main_access()
+    function renderHTML()
+    {
+        if (file_exists(VIEWS_DIR . "/{$this->html}")) {
+            require_once VIEWS_DIR . "/{$this->html}";
+        } else {
+            require_once VIEWS_DIR . "/auth/404.html";
+        }
+    }
+
+    function renderJsTags()
+    {
+        $scripts = "";
+        if (empty($this->js)) return $scripts;
+
+        if (is_array($this->js)) {
+            foreach ($this->js as $scriptURL) {
+                $scriptURL = JS_DIR . "/$scriptURL";
+                $scripts .= "<script src='{$scriptURL}'></script>\n";
+            }
+            return $scripts;
+        }
+
+        $scripts = "<script src='{$this->js}'></script>";
+        return $scripts;
+    }
+
+    function renderCssTags()
+    {
+        $styleLinks = "";
+        if (empty($this->css)) return $styleLinks;
+
+        if (is_array($this->css)) {
+            foreach ($this->css as $linkURL) {
+                $linkURL = CSS_DIR . "/$linkURL";
+                $styleLinks .= "<link rel='stylesheet' href='{$linkURL}' />\n";
+            }
+            return $styleLinks;
+        }
+
+        $styleLinks = "<link rel='stylesheet' href='{$this->css}' />";
+        return $styleLinks;
+    }
+}
+
+
+class routerClass
+{
+    public function getModule(): moduleData
     {
         $response = $this->not_found_404();
 
-        $router = $_GET["router"] ?? $_POST["router"] ?? "acceso";
+        $router = $_GET["router"] ?? $_POST["router"] ?? "main";
         $action = $_GET["action"] ?? $_POST["action"] ?? "index";
+        $method = $_SERVER["REQUEST_METHOD"];
 
         try {
             // si existe el controllador lo llama
-            if (is_file("{$this->RoutersDir}/{$router}.router.php")) {
+            if (is_file(ROUTES_DIR . "/{$router}.router.php")) {
 
-                require_once("{$this->RoutersDir}/{$router}.router.php");
+                require_once ROUTES_DIR . "/{$router}.router.php";
 
                 // si la funcion existe y es valida la ejecuta
                 if (is_callable(["{$router}Router", $action]) == true) {
 
                     $routerClassObject = "{$router}Router";
                     $routerClassObject = new $routerClassObject();
+
+                    /**
+                     * @var moduleData
+                     */
                     $response = $routerClassObject->$action();
 
+                    if (!in_array($method, $response->methodsAlowed)) {
+                        return $this->not_authorized_401();
+                    }
+
                     //$authorized = $this->validate_module($controller, $action, $_SESSION["Position"]);
-                    $public_access = in_array($action, $controller_class->public_access ?? []);
+                    //$public_access = in_array($action, $routerClassObject->public_access ?? []);
 
                     //if ($public_access == false && $authorized == false) {
-                    if ($public_access == false && $authorized == false) {
-                        $response = $this->not_authorized_401();
-                    }
+                    // if ($public_access == false) {
+                    //     $response = $this->not_authorized_401();
+                    // }
                 }
             }
         } catch (\Throwable $th) {
@@ -51,53 +112,16 @@ class controller
 
     function not_found_404()
     {
-
-        return [
-            "html" => "404.html",
-            "js" => [],
-            "css" => []
-        ];
+        return new moduleData("auth/404.html");
     }
 
     function error_500()
     {
-
-        return [
-            "html" => "500.html",
-            "js" => [],
-            "css" => []
-        ];
+        return new moduleData("auth/500.html");
     }
 
     function not_authorized_401()
     {
-
-        return [
-            "html" => "401.html",
-            "js" => [],
-            "css" => []
-        ];
-    }
-
-    function enpoint_firma_cliente()
-    {
-
-        return [
-            "html" => "enpoint_firma_cliente.php",
-            "js" => "",
-            "css" => ""
-        ];
-    }
-
-    function validate_module($controller, $action, $rol)
-    {
-
-        $sql =
-            "SELECT * 
-            FROM [MOVESAWEB]..tbl_restricciones as t0
-            INNER JOIN [MOVESAWEB]..TBL_PANTALLAS as t1 on t1.PAN_ID = t0.pan_id
-            WHERE t1.PAN_CONTROLLER = ? AND t1.PAN_ACTION = ? AND t0.res_position = upper(?)";
-        $stmt = sqlsrv_query($this->conn, $sql, array($controller, $action, $rol));
-        return sqlsrv_has_rows($stmt);
+        return new moduleData("auth/401.html");
     }
 }
