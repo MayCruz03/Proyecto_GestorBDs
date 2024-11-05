@@ -62,5 +62,13 @@
         "objectName": "reporteEmpleados",
         "schema": "dbo",
         "parentOf": 20001
+    },
+    {
+        "objectTypeId": 10003,
+        "objectTypeName": "Schema",
+        "objectId": 20009,
+        "objectName": "dbo",
+        "schema": null,
+        "parentOf": 20001
     }
 ]

@@ -17,7 +17,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.js"></script>
-    <script src="js/menuBar.js"></script>
+    <script src="dist/menuBar.min.js"></script>
 </head>
 
 <body>
@@ -31,6 +31,16 @@
                 <a class="icon item" href="#"><i class="fa-solid fa-code-branch icon"></i> Funcion</a>
                 <a class="icon item" href="#"><i class="fa-regular fa-window-restore icon"></i> Vista</a>
                 <a class="icon item" href="#"><i class="fa-solid fa-file-code icon"></i> Hoja de Consulta</a>
+            </div>
+        </div>
+        <div class="ui dropdown item">
+            <i class="eye icon"></i> Vista
+            <div class="menu">
+                <a class="icon item btn-toggle-menu" data-toggle="1">
+                    <i class="compress arrows alternate icon"></i> Minimizar todo</a>
+                <a class="icon item btn-toggle-menu" data-toggle="0">
+                    <i class="compress icon"></i> Maximizar Todo
+                </a>
             </div>
         </div>
     </div>
