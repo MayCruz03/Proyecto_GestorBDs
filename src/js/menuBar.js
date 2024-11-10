@@ -103,6 +103,7 @@ const menuBarComponent = {
 
                 let listItems = this.serverObjectsList.filter(x => x.objectTypeId == obj.objectId && x.parentOf == db.objectId);
                 listItems = listItems.map(item => {
+                    console.log(item.objectId, this.objectsKeys.schema);
                     let objName = item.objectId == this.objectsKeys.schema ? item.schema : `${item.schema ?? ""}.${item.objectName}`
                     let template =
                         `<div class="item">
