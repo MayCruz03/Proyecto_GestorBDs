@@ -9,5 +9,14 @@ class tableRouter
         return new moduleData(
             "table/createTable.php",
         );
+
+    }
+
+    public function find()
+    {
+        return new moduleData(
+            "table/createTable.php",
+        );
+
     }
 }

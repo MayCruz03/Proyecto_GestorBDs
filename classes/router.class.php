@@ -28,7 +28,8 @@ class moduleData
     function renderJsTags()
     {
         $scripts = "";
-        if (empty($this->js)) return $scripts;
+        if (empty($this->js))
+            return $scripts;
 
         if (is_array($this->js)) {
             foreach ($this->js as $scriptURL) {
@@ -45,7 +46,8 @@ class moduleData
     function renderCssTags()
     {
         $styleLinks = "";
-        if (empty($this->css)) return $styleLinks;
+        if (empty($this->css))
+            return $styleLinks;
 
         if (is_array($this->css)) {
             foreach ($this->css as $linkURL) {
@@ -67,18 +69,20 @@ class routerClass
     {
         $response = $this->not_found_404();
 
+        // domain.com/controller/action
+        // domain.com?router=table&action=create
         $router = $_GET["router"] ?? $_POST["router"] ?? "main";
         $action = $_GET["action"] ?? $_POST["action"] ?? "index";
         $method = $_SERVER["REQUEST_METHOD"];
 
         try {
             // si existe el controllador lo llama
-            if (is_file(ROUTES_DIR . "/{$router}.router.php")) {
-
-                require_once ROUTES_DIR . "/{$router}.router.php";
+            $routerDIR = ROUTES_DIR . "/{$router}.router.php";
+            if (is_file($routerDIR)) {
+                require_once $routerDIR;
 
                 // si la funcion existe y es valida la ejecuta
-                if (is_callable(["{$router}Router", $action]) == true) {
+                if (method_exists("{$router}Router", $action) == true) {
 
                     $routerClassObject = "{$router}Router";
                     $routerClassObject = new $routerClassObject();
@@ -101,6 +105,7 @@ class routerClass
                     // }
                 }
             }
+
         } catch (\Throwable $th) {
             $response = $this->error_500();
             echo $th->getMessage();
