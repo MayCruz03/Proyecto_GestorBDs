@@ -18,6 +18,10 @@ interface DBInterface
 abstract class DBClassTemplate implements DBInterface
 {
     protected $conn;
+    /**
+     * @var DBSource
+     */
+    protected $connResource;
     protected $connStatus;
     protected $query;
     protected $lastQueryStatus;
@@ -33,4 +37,9 @@ abstract class DBClassTemplate implements DBInterface
     abstract public function first(): array;
     abstract public function all(): array;
     abstract public function headers(): array;
+
+    public function type()
+    {
+        return $this->connResource->db_server_type;
+    }
 }

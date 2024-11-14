@@ -1,20 +1,22 @@
 <?php
 require_once "DBSource.class.php";
-require_once "db.interface.php";
+require_once "DBClassTemplate.class.php";
 
-class MSSQL implements DBInterface
+class MSSQL extends DBClassTemplate
 {
-    private $conn;
-    private $query;
-    private $lastQueryStatus;
-    private $lastError;
+    protected $connResource;
+    protected $conn;
+    protected $query;
+    protected $lastQueryStatus;
+    protected $lastError;
 
     public function __construct(DBSource $conn)
     {
-        $this->connect($conn);
+        $this->connResource = $conn;
+        $this->connect($this->connResource);
     }
 
-    public function connect(DBSource $conn)
+    public function connect(DBSource $conn): void
     {
         $connectionOptions = [
             "Database" => $conn->db_name,
@@ -30,7 +32,7 @@ class MSSQL implements DBInterface
         }
     }
 
-    public function query($sqlQuery, $parameters = [])
+    public function query($sqlQuery, $parameters = []): DBClassTemplate
     {
         // Preparar la consulta
         $stmt = sqlsrv_prepare($this->conn, $sqlQuery, $parameters);
@@ -55,17 +57,17 @@ class MSSQL implements DBInterface
         return $this;
     }
 
-    public function status()
+    public function status(): bool
     {
         return $this->lastQueryStatus;
     }
 
-    public function error()
+    public function error(): string
     {
         return $this->lastError;
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): int
     {
         // Ejecutar una consulta para obtener el último ID insertado en el contexto de la conexión actual
         $stmt = sqlsrv_query($this->conn, "SELECT SCOPE_IDENTITY() AS last_id");
@@ -73,16 +75,16 @@ class MSSQL implements DBInterface
         if ($stmt && $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             return $row["last_id"];
         } else {
-            return null;
+            return 0;
         }
     }
 
-    public function beginTran()
+    public function beginTran(): void
     {
         sqlsrv_begin_transaction($this->conn);
     }
 
-    public function finishTran($status)
+    public function finishTran($status): void
     {
         if ($status) {
             sqlsrv_commit($this->conn);
@@ -91,7 +93,10 @@ class MSSQL implements DBInterface
         }
     }
 
-    public function first()
+    /**
+     * @return array|null
+     */
+    public function first(): array
     {
         if ($this->query) {
             $row = sqlsrv_fetch_array($this->query, SQLSRV_FETCH_ASSOC);
@@ -100,7 +105,7 @@ class MSSQL implements DBInterface
         return null;
     }
 
-    public function all()
+    public function all(): array
     {
         $results = [];
         if ($this->query) {
@@ -111,7 +116,7 @@ class MSSQL implements DBInterface
         return $results;
     }
 
-    public function headers()
+    public function headers(): array
     {
         $headers = sqlsrv_field_metadata($this->query);
         return array_map(function ($item) {

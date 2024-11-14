@@ -1,20 +1,22 @@
 <?php
 require_once "DBSource.class.php";
-require_once "db.interface.php";
+require_once "DBClassTemplate.class.php";
 
-class MYSQL implements DBInterface
+class MYSQL extends DBClassTemplate
 {
-    private $conn;
-    private $query;
-    private $lastQueryStatus;
-    private $lastError;
+    protected $conn;
+    protected $connResource;
+    protected $query;
+    protected $lastQueryStatus;
+    protected $lastError;
 
     public function __construct(DBSource $conn)
     {
-        $this->connect($conn);
+        $this->connResource = $conn;
+        $this->connect($this->connResource);
     }
 
-    public function connect(DBSource $conn)
+    public function connect(DBSource $conn): void
     {
         $this->conn = new mysqli(
             $conn->db_server,
@@ -29,7 +31,7 @@ class MYSQL implements DBInterface
         }
     }
 
-    public function query($sqlQuery, $parameters = [])
+    public function query($sqlQuery, $parameters = []): DBClassTemplate
     {
         $stmt = $this->conn->prepare($sqlQuery);
 
@@ -54,32 +56,32 @@ class MYSQL implements DBInterface
         return $this;
     }
 
-    public function status()
+    public function status(): bool
     {
         return $this->lastQueryStatus;
     }
 
-    public function error()
+    public function error(): string
     {
         return $this->lastError;
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): int
     {
         $stmt = $this->conn->query("SELECT @@IDENTITY AS last_id");
         if ($stmt && $row = $stmt->fetch_assoc()) {
             return $row["last_id"];
         } else {
-            return null;
+            return 0;
         }
     }
 
-    public function beginTran()
+    public function beginTran(): void
     {
         $this->conn->begin_transaction();
     }
 
-    public function finishTran($status)
+    public function finishTran($status): void
     {
         if ($status) {
             $this->conn->commit();
@@ -88,17 +90,17 @@ class MYSQL implements DBInterface
         }
     }
 
-    public function first()
+    public function first(): array
     {
         return DBSource::map_object_utf8($this->query->fetch_assoc());
     }
 
-    public function all()
+    public function all(): array
     {
         return DBSource::map_object_utf8($this->query->fetch_all(MYSQLI_ASSOC));
     }
 
-    public function headers()
+    public function headers(): array
     {
         $headers = $this->query->fetch_fields();
         return array_map(function ($item) {
