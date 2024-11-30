@@ -3,26 +3,55 @@
 namespace App\Controllers;
 
 use lib\ApiResponse;
+use Lib\HttpClient;
 
 class Controller
 {
+    const CHECK_EMPTY_REGULAR = 0;
+    const CHECK_EMPTY_STRICT = 1;
+
+    protected $Api;
     protected $publicAccess = [];
 
-    public function view($route, $data = [])
+    public function __construct()
+    {
+        $this->Api = new HttpClient(API_DOMAIN);
+
+        $this->Api->setHeaders([
+            //'Authorization' => 'Bearer your_access_token',
+            'Accept' => 'application/json',
+        ]);
+    }
+
+    public function verifySession()
+    {
+        $auth = $this->Api->get("/validateAuthentication");
+        return $auth;
+    }
+
+    public function view($route, $data = [], $useLayout = true)
     {
         extract($data);
 
         $route = str_replace(".", "/", $route);
-        $URLview = VIEWS_DIR . "/{$route}.php";
+        $viewFile = VIEWS_DIR . "/{$route}.php";
 
-        if (file_exists($URLview)) {
+        if (file_exists($viewFile)) {
             ob_start();
-            include $URLview;
+            include $viewFile;
             $content = ob_get_clean();
 
-            return $content;
+            // Cargar el layout principal
+            $layoutFile = VIEWS_DIR . "/layout.php";
+            if ($useLayout && file_exists($layoutFile)) {
+                ob_start();
+                include $layoutFile;
+                return ob_get_clean();
+            }
+
+            return $content; // Fallback en caso de que el layout no exista
         } else {
-            return "El archivo no existe";
+            return "El archivo de vista no existe: {$viewFile}";
         }
     }
 
@@ -44,7 +73,7 @@ class Controller
         return $parameters;
     }
 
-    public function checkRequestParams($requiredFields)
+    public function checkRequestParams($requiredFields, $checkEmpty = false, $flags = self::CHECK_EMPTY_REGULAR)
     {
         $response = new ApiResponse();
 
@@ -53,12 +82,38 @@ class Controller
 
         foreach ($requiredFields as $field) {
             if (!in_array($field, $requestDataKeys)) {
-                $response->Error(500, "Se esperaba recibir el parametro [{$field}], no fue recibido");
-                return $response;
+                return $response->Error(500, "Se esperaba recibir el parametro [{$field}], no fue recibido");
+            } else if ($checkEmpty && $this->empty($requestData[$field], $flags)) {
+                return $response->Error(500, "El parametro [{$field}] es obligatorio, no puede estar vacio... ");
             }
         }
 
         $response->Ok($requestData);
         return $response;
+    }
+
+    public function empty($value, $flags)
+    {
+        $value = trim($value);
+
+        switch ($flags) {
+            case self::CHECK_EMPTY_REGULAR:
+                $empty = in_array($value, [null, ""]);
+                break;
+            case self::CHECK_EMPTY_STRICT:
+                $empty = in_array($value, [null, "", 0]);
+                break;
+
+            default:
+                $empty = in_array($value, [null, ""]);
+                break;
+        }
+
+        return $empty;
+    }
+
+    public function isPublicAccess($item)
+    {
+        return in_array($item, $this->publicAccess);
     }
 }

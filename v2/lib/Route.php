@@ -46,8 +46,13 @@ class Route
                      * @var Controller
                      */
                     $controller = new $controller();
-                    $response = $controller->$action(...$params);
+                    $session = $controller->verifySession();
 
+                    if ($session->success || $controller->isPublicAccess($action)) {
+                        $response = $controller->$action(...$params);
+                    } else {
+                        header("location: /login");
+                    }
                 } else if (is_callable($callback)) {
                     $response = $callback(...$params);
                 }
@@ -64,6 +69,6 @@ class Route
             }
         }
 
-        echo "404 Not Found";
+        header("location: /");
     }
 }

@@ -1,0 +1,20 @@
+[
+    {
+        "db_server_code": "SQL1001",
+        "db_server_alias": "Microsoft SQL Server",
+        "db_server_type": "MSSQL",
+        "db_server": "SQL1001.site4now.net",
+        "db_name": "db_aaed69_mssqldb",
+        "db_user": null,
+        "db_pass": null
+    },
+    {
+        "db_server_code": "MYSQL1001",
+        "db_server_alias": "MySQL Server",
+        "db_server_type": "MYSQL",
+        "db_server": "MYSQL1001.site4now.net",
+        "db_name": "db_aaed69_mysqldb",
+        "db_user": null,
+        "db_pass": null
+    }
+]
