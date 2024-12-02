@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use Lib\ApiResponse;
+use Lib\DBObjectsMap;
 
 class ServerObjectsController extends Controller
 {
@@ -65,8 +67,55 @@ class ServerObjectsController extends Controller
         return $request;
     }
 
+    public function getDataTypes()
+    {
+        $request = $this->Api->get("/serverObjects/dataTypes");
+
+        if (!$request->success) {
+            return $request;
+        }
+
+        $data = [];
+        foreach ($request->data as $item) {
+            $data[] = [
+                "dataTypeId" => $item["DTYPE_ID"],
+                "dataTypeName" => $item["DTYPE_NAME"],
+                "dataTypeNumberParams" => $item["DPARAMS_NUMBER"]
+            ];
+        }
+        $request->data = $data;
+
+        return $request;
+    }
+
     public function createTable()
     {
-        return $this->view("createTable");
+        $dataTypes = $this->getDataTypes();
+        return $this->view("createTable", [
+            "title" => "Crear Tabla",
+            "dataTypes" => $dataTypes->data ?? []
+        ]);
+    }
+
+    public function createTablePostBack()
+    {
+        $response = new ApiResponse();
+
+        $request = $this->checkRequestParams(["tableName", "columns"], true);
+        $data = $request->data;
+
+        if (empty($_SESSION["DB_USER_SCHEMA"] ?? null)) {
+            return $response->Error(500, "No se indico el esquema principal...");
+        }
+
+        $url = "/serverObjects/getObjId/" . DBObjectsMap::OBJ_SCHEMA . "/" . $_SESSION["DB_USER_SCHEMA"];
+        $data["schema"] = $this->Api->get($url)->data;
+
+        $url = "/serverObjects/getObjId/" . DBObjectsMap::OBJ_DATABASE . "/" . $_SESSION["DB_NAME"];
+        $databaseId = $this->Api->get($url)->data;
+
+        $response = $this->Api->post("/table/{$databaseId}/create", $data);
+        return $response;
+
     }
 }

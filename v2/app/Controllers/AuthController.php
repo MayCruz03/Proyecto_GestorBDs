@@ -77,6 +77,7 @@ class AuthController extends Controller
 
         $exp = intval($loginResponse->data["duration"]);
         $token = $loginResponse->data["token"];
+        $schema = $loginResponse->data["userSchema"];
 
         setcookie(WEB_COOKIE_NAME, $token, [
             'expires' => time() + $exp,
@@ -84,6 +85,17 @@ class AuthController extends Controller
             'httponly' => true,         // Solo accesible desde HTTP (no JavaScript)
             'samesite' => 'Strict'      // Evita el envío en solicitudes de terceros
         ]);
+
+        setcookie(WEB_COOKIE_NAME . '_EXP', time() + $exp, [
+            'expires' => time() + $exp,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
+
+        $_SESSION["DB_SERVER_NAME"] = $loginData["db_server_alias"];
+        $_SESSION["DB_NAME"] = $loginData["db_name"];
+        $_SESSION["DB_USER_SCHEMA"] = $schema;
 
         return $loginResponse;
     }

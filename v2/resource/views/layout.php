@@ -11,13 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/utilities.css">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/css/utilities.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"> -->
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.3/semantic.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
 
     <script src="/js/app.js"></script>
     <script src="/js/layout.js"></script>
@@ -54,7 +56,7 @@
             <div class="column five wide">
                 <div class="ui header dividing">
                     <i class="server icon"></i>
-                    <div class="content">Servidor: Microsoft SQL Server</div>
+                    <div class="content">Servidor: <?= $_SESSION["DB_SERVER_NAME"] ?? "(No Definido)" ?></div>
                 </div>
                 <div class="ui list" id="frm-server-objects-menu"></div>
                 <div class="ui divider"></div>
@@ -65,6 +67,12 @@
             </main>
         </div>
     </div>
+
+    <?php
+    foreach ($jsScripts ?? [] as $script) {
+        echo "<script src='{$script}'></script>";
+    }
+    ?>
 </body>
 
 </html>

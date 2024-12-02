@@ -94,6 +94,9 @@ class Controller
 
     public function empty($value, $flags)
     {
+        if (is_array($value))
+            return empty($value);
+
         $value = trim($value);
 
         switch ($flags) {
