@@ -56,9 +56,12 @@ const queryManager = {
             data: { sqlQuery: stringCode },
             success(_response) {
                 if (!_response.success) {
-                    SwalToast.fire({
-                        icon: "error",
-                        title: _response.Message
+                    _this.addLog({
+                        timestamp: moment().format('HH:mm:ss'),
+                        status: false,
+                        command: stringCode,
+                        message: "Internal Server Error: " + _response.message,
+                        duration: 0
                     });
                     return;
                 }
