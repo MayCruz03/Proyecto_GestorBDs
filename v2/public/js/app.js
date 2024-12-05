@@ -46,3 +46,18 @@ function isEmpty(value, replace = undefined) {
 
     return false;
 }
+
+function exportTableToExcel(table_id, book_name, _sheet_name = "Sheet1") {
+
+	// Obtiene los datos de las 5 tablas
+	var sheet = XLSX.utils.table_to_sheet(document.getElementById(table_id));
+
+	// Crea un libro de Excel y añade las hojas con los datos
+	var libro = XLSX.utils.book_new();
+	XLSX.utils.book_append_sheet(libro, sheet, _sheet_name);
+
+	// Formatea la fecha en "yyyy-mm-dd"
+	var fechaFormateada = moment().format('YYYY-MM-DD');
+
+	XLSX.writeFile(libro, `${book_name} (${fechaFormateada}).xlsx`);
+}

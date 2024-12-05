@@ -424,6 +424,11 @@
     font-size: 1rem !important;
 }
 
+.fs-xx-small {
+    font-size: xx-small !important;
+}
+
+
 .fst-italic {
     font-style: italic !important;
 }
@@ -516,4 +521,11 @@
 .text-break {
     word-wrap: break-word !important;
     word-break: break-word !important;
+}
+
+.text-truncate {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
 }

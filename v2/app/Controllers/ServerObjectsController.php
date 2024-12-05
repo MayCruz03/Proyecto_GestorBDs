@@ -118,4 +118,71 @@ class ServerObjectsController extends Controller
         return $response;
 
     }
+
+    public function getTableColumns($tableId)
+    {
+        $response = new ApiResponse();
+        try {
+            $response = $this->Api->get("/table/{$tableId}/columns");
+
+            if ($response->success) {
+                $data = [];
+                foreach ($response->data ?? [] as $item) {
+                    $data[] = [
+                        "id" => $item["OBJ_ID"],
+                        "typeId" => $item["OBJ_TYPE_ID"],
+                        "name" => $item["OBJ_NAME"],
+                        "index" => $item["OBJ_INDEX"],
+                        "dataTypeId" => $item["OBJ_DATATYPE_ID"],
+                        "dataTypeName" => $item["OBJ_DATATYPE_NAME"],
+                        "len1" => $item["OBJ_LEN_1"],
+                        "len2" => $item["OBJ_LEN_2"],
+                        "hasIdentity" => $item["OBJ_HAS_IDENTITY"],
+                        "isNullable" => $item["OBJ_IS_NULLABLE"],
+                        "defaultValue" => $item["OBJ_DEFAULT_VALUE"],
+                        "fkTableId" => $item["OBJ_FK_TABLE_ID"],
+                        "fkTableName" => $item["OBJ_FK_TABLE_NAME"],
+                        "fkColumnId" => $item["OBJ_FK_COLUMN_ID"],
+                        "fkColumnName" => $item["OBJ_FK_COLUMN_NAME"],
+                    ];
+                }
+                $response->data = $data;
+            }
+
+            return $response;
+
+        } catch (\Throwable $th) {
+            return $response->Error(500, $th->getMessage());
+        }
+    }
+
+    public function queryManager()
+    {
+        $tables = $this->Api->get("/table/list");
+        return $this->view("queryManager", [
+            "title" => "Hoja de consulta",
+            "tables" => $tables->data ?? []
+        ]);
+    }
+
+    public function executeQuery()
+    {
+        $response = new ApiResponse();
+        try {
+            $request = $this->checkRequestParams(["sqlQuery"], true);
+            if (!$request->success) {
+                return $request;
+            }
+            $data = $request->data;
+
+            $response = $this->Api->post("/query/execute", [
+                "sqlQuery" => base64_encode($data["sqlQuery"]),
+                "encoded" => true
+            ]);
+
+            return $response;
+        } catch (\Throwable $th) {
+            return $response->Error(500, $th->getMessage());
+        }
+    }
 }

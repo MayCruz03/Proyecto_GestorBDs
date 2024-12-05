@@ -21,6 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.18.0/ace.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://unpkg.com/xlsx@0.17.3/dist/xlsx.full.min.js"></script>
+
     <script src="/js/app.js"></script>
     <script src="/js/layout.js"></script>
 
@@ -34,7 +38,8 @@
                 <a class="icon item" href="#"><i class="unsplash icon"></i> Procedimiento Almacenado</a>
                 <a class="icon item" href="#"><i class="fa-solid fa-code-branch icon"></i> Funcion</a>
                 <a class="icon item" href="#"><i class="fa-regular fa-window-restore icon"></i> Vista</a>
-                <a class="icon item" href="#"><i class="fa-solid fa-file-code icon"></i> Hoja de Consulta</a>
+                <a class="icon item" href="/queryManager"><i class="fa-solid fa-file-code icon"></i> Hoja de
+                    Consulta</a>
             </div>
         </div>
         <div class="ui dropdown item">

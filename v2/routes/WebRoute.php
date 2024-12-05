@@ -16,4 +16,7 @@ Route::post("/serveObjects/dataTypes", [ServerObjectsController::class, "getData
 
 Route::get("/table/create", [ServerObjectsController::class, "createTable"]);
 Route::post("/table/create", [ServerObjectsController::class, "createTablePostBack"]);
+Route::post("/table/:objId/columns", [ServerObjectsController::class, "getTableColumns"]);
 
+Route::get("/queryManager", [ServerObjectsController::class, "queryManager"]);
+Route::post("/executeQuery", [ServerObjectsController::class, "executeQuery"]);
